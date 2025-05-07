@@ -2,7 +2,7 @@
   "name": "Sleep Disruptor",
   "short_name": "Disruptor",
   "description": "Timer with disruptive sounds",
-  "start_url": "/",
+  "start_url": "/disruptor/",
   "display": "standalone",
   "background_color": "#1c1c1e",
   "theme_color": "#ff9500",
