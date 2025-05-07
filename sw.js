@@ -1,11 +1,11 @@
 const CACHE_NAME = 'sleep-disruptor-v2';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.webmanifest',
-  '/icon-192.png',
-  '/icon-512.png',
-  '/splash.png',
+  '/disruptor/',
+  '/disruptor/index.html',
+  '/disruptor/manifest.webmanifest',
+  '/disruptor/icon-192.png',
+  '/disruptor/icon-512.png',
+  '/disruptor/splash.png',
   'https://cdn.jsdelivr.net/npm/wake-lock@0.2.0/dist/wakelock.min.js'
 ];
 
