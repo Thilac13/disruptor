@@ -3,14 +3,8 @@ const ASSETS = [
   '/',
   '/index.html',
   '/manifest.webmanifest',
-  '/icons/icon-72.png',
-  '/icons/icon-96.png',
-  '/icons/icon-128.png',
-  '/icons/icon-144.png',
-  '/icons/icon-152.png',
-  '/icons/icon-192.png',
-  '/icons/icon-384.png',
-  '/icons/icon-512.png',
+  '/icon-192.png',
+  '/icon-512.png',
   '/splash.png',
   'https://cdn.jsdelivr.net/npm/wake-lock@0.2.0/dist/wakelock.min.js'
 ];
