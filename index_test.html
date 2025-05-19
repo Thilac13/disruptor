@@ -6,8 +6,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#1c1c1e">
-  <title>iOS Sleep Disruptor</title>
-  <link rel="stylesheet" href="styles.css"
+  <title>Disruptor</title>
+  <link rel="stylesheet" href="styles.css">
   <!-- iOS Icons and Splash Screen -->
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="apple-touch-startup-image" href="splash.png">
@@ -75,9 +75,28 @@
       </div>
     </div>
 
+    <div class="control-group">
+      <label for="soundDuration">Sound Duration:</label>
+      <select id="soundDuration" aria-label="Sound Duration">
+         <option value="short">Short (5-10 secs)</option>
+         <option value="medium" selected>Medium (10-15 secs)</option>
+         <option value="long">Long (20-25 secs)</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="soundType">Sound Type:</label>
+        <select id="soundType" aria-label="Sound type">
+          <option value="square" selected>Square Wave</option>
+          <option value="sine">Sine Wave</option>
+          <option value="sawtooth">Sawtooth Wave</option>
+        </select>
+    </div>
+
     <button class="button" id="startStopBtn" aria-pressed="false">
       Start
     </button>
+
     <div class="countdown" id="countdownDisplay" aria-live="polite" role="timer"></div>
     <div id="a11y-live-region" aria-live="polite" class="sr-only"></div>
   </div>
