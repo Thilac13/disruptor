@@ -37,17 +37,20 @@ const startBtn = document.getElementById("startStopBtn");
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
 
-      osc.type = "square";
+      osc.type = getSoundType();
       osc.frequency.value = pitch;
       gain.gain.value = volume;
 
       osc.connect(gain);
       gain.connect(audioCtx.destination);
       osc.start();
-
+      
+      const [minDur, maxDur] = getSoundDurationRange();
+      const duration = Math.random() * (maxDur - minDur) + minDur;
       setTimeout(() => {
         osc.stop();
-      }, Math.random() * 4000 + 1000); // 1–5 sec
+        gain.disconnect();
+      }, duration);
     }
 
     function updateCountdownDisplay() {
@@ -93,7 +96,10 @@ const startBtn = document.getElementById("startStopBtn");
     function scheduleNextSound(volume, pitch) {
       if (remainingSeconds <= 0) return;
       playSound(volume, pitch);
-      const delay = Math.random() * 10000 + 5000; // 5–15 sec
+
+      const [minInterval, maxInterval] = getSoundIntervalRange();
+      const delay = Math.random() * (maxInterval - minInterval) + minInterval;
+      
       soundTimeout = setTimeout(() => {
         scheduleNextSound(volume, pitch);
       }, delay);
@@ -117,6 +123,9 @@ const startBtn = document.getElementById("startStopBtn");
       document.getElementById("hours").disabled = true;
       document.getElementById("minutes").disabled = true;
       document.getElementById("seconds").disabled = true;
+      document.getElementById("soundInterval").disabled = true;
+      document.getElementById("soundDuration").disabled = true;
+      document.getElementById("soundType").disabled = true;
       volumeSlider.disabled = true;
       pitchSlider.disabled = true;
       
@@ -126,7 +135,7 @@ const startBtn = document.getElementById("startStopBtn");
       timerRunning = true;
 
       // Announce start
-      announce(`Timer started for ${h} hours, ${m} minutes, ${s} seconds at ${volume*100}% volume and ${getPitchName()} pitch`);
+      announce(`Timer started for ${h} hours, ${m} minutes, ${s} seconds at ${volume*100}% volume, ${getPitchName()} pitch, ${document.getElementById("soundInterval").selectedOptions[0].textContent}, ${document.getElementById("soundDuration").selectedOptions[0].textContent}, ${document.getElementById("soundType").selectedOptions[0].textContent}`);
 
       updateCountdownDisplay();
 
@@ -153,6 +162,9 @@ const startBtn = document.getElementById("startStopBtn");
       document.getElementById("hours").disabled = false;
       document.getElementById("minutes").disabled = false;
       document.getElementById("seconds").disabled = false;
+      document.getElementById("soundInterval").disabled = false;
+      document.getElementById("soundDuration").disabled = false;
+      document.getElementById("soundType").disabled = false;
       volumeSlider.disabled = false;
       pitchSlider.disabled = false;
       timerRunning = false;
@@ -165,6 +177,25 @@ const startBtn = document.getElementById("startStopBtn");
       announce("Timer stopped");
       resetControls();
     }
+    
+    function getSoundIntervalRange() {
+      const val = document.getElementById("soundInterval").value
+      return val === "low" ? [5000, 10000] :
+             val === "normal" ? [10000, 15000] :
+             [15000, 20000] ;
+    }
+
+    function getSoundDurationRange() {
+      const val = document.getElementById("soundDuration").value;
+      return val === "short" ? [5000, 10000] : 
+             val === "medium" ? [10000, 15000] : 
+              [20000, 25000];
+    }
+
+    function getSoundType() {
+      return document.getElementById("soundType").value;
+    }
+
 
     // Event listeners
     volumeSlider.addEventListener("input", () => {
