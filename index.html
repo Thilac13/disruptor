@@ -6,8 +6,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#1c1c1e">
-  <title>iOS Sleep Disruptor</title>
-  
+  <title>Disruptor</title>
+  <link rel="stylesheet" href="styles.css">
   <!-- iOS Icons and Splash Screen -->
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="apple-touch-startup-image" href="splash.png">
@@ -17,163 +17,6 @@
   
   <!-- Screen Wake Lock API polyfill -->
   <script src="https://cdn.jsdelivr.net/npm/wake-lock@0.2.0/dist/wakelock.min.js"></script>
-  
-  <style>
-    :root {
-      --accent: #007AFF;
-    }
-
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #1c1c1e;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      line-height: 1.5;
-    }
-
-    @media (prefers-color-scheme: light) {
-      :root {
-        --accent: #007AFF;
-      }
-      body {
-        background: #f2f2f7;
-        color: #000000;
-      }
-      .glass {
-        background: rgba(255, 255, 255, 0.7);
-        color: #1c1c1e;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        animation-duration: 0.01ms !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-
-    .glass {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 24px;
-      padding: 24px;
-      width: 320px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-      color: white;
-    }
-
-    h3 {
-      text-align: center;
-      margin-bottom: 16px;
-      font-size: 1.5rem;
-    }
-
-    .time-picker {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .time-picker div {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .time-picker label {
-      font-size: 0.875rem;
-      margin-bottom: 4px;
-    }
-
-    select {
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.2rem;
-      padding: 8px;
-      appearance: none;
-      text-align: center;
-      min-width: 60px;
-    }
-
-    @media (prefers-color-scheme: light) {
-      select {
-        color: #1c1c1e;
-      }
-    }
-
-    input[type=range] {
-      width: 100%;
-      accent-color: var(--accent);
-      height: 8px;
-      margin-top: 8px;
-    }
-
-    .slider-container, .pitch-container {
-      margin: 24px 0;
-    }
-
-    .slider-container label, .pitch-container label {
-      display: block;
-      font-size: 1rem;
-      margin-bottom: 8px;
-    }
-
-    .pitch-labels {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 4px;
-      font-size: 0.875rem;
-    }
-
-    .button {
-      width: 100%;
-      padding: 14px;
-      background: var(--accent);
-      border: none;
-      color: white;
-      font-size: 1.1rem;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: 500;
-    }
-
-    .button:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .countdown {
-      text-align: center;
-      font-size: 1.5rem;
-      margin-top: 16px;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border-width: 0;
-    }
-
-    select:focus, input:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-  </style>
 </head>
 <body>
   <div class="glass">
@@ -228,6 +71,34 @@
       </div>
     </div>
 
+    <!-- New Controls -->
+    <div class="control-group">
+      <label for="soundInterval">Sound Interval:</label>
+      <select id="soundInterval" aria-label="Sound interval">
+        <option value="low">Low (5-10 secs)</option>
+        <option value="normal" selected>Normal (10-15 secs)</option>
+        <option value="long">Long (15-20 secs)</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="soundDuration">Sound Duration:</label>
+      <select id="soundDuration" aria-label="Sound duration">
+        <option value="short">Short (5-10 secs)</option>
+        <option value="medium" selected>Medium (10-15 secs)</option>
+        <option value="long">Long (20-25 secs)</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="soundType">Sound Type:</label>
+      <select id="soundType" aria-label="Sound type">
+        <option value="square" selected>Square Wave</option>
+        <option value="sine">Sine Wave</option>
+        <option value="sawtooth">Sawtooth Wave</option>
+      </select>
+    </div>
+
     <button class="button" id="startStopBtn" aria-pressed="false">
       Start
     </button>
@@ -235,250 +106,6 @@
     <div id="a11y-live-region" aria-live="polite" class="sr-only"></div>
   </div>
 
-  <script>
-    const startBtn = document.getElementById("startStopBtn");
-    const countdownDisplay = document.getElementById("countdownDisplay");
-    const volumeSlider = document.getElementById("volume");
-    const pitchSlider = document.getElementById("pitch");
-    const volumeOutput = document.getElementById("volume-output");
-    const a11yLiveRegion = document.getElementById("a11y-live-region");
-
-    let timerRunning = false;
-    let remainingSeconds = 0;
-    let countdownInterval, soundTimeout;
-    let wakeLock = null;
-
-    // Initialize AudioContext on user interaction
-    let audioCtx;
-    let audioInitialized = false;
-
-    function initAudio() {
-      if (!audioInitialized) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        audioInitialized = true;
-      }
-    }
-
-    function getPitchFrequency() {
-      const val = parseInt(pitchSlider.value);
-      return val === 0 ? 200 : val === 1 ? 600 : 1000;
-    }
-
-    function getPitchName() {
-      const val = parseInt(pitchSlider.value);
-      return val === 0 ? "Low" : val === 1 ? "Mid" : "High";
-    }
-
-    function playSound(volume, pitch) {
-      if (!audioInitialized) initAudio();
-      
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-
-      osc.type = "square";
-      osc.frequency.value = pitch;
-      gain.gain.value = volume;
-
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-
-      setTimeout(() => {
-        osc.stop();
-      }, Math.random() * 4000 + 1000); // 1–5 sec
-    }
-
-    function updateCountdownDisplay() {
-      const h = Math.floor(remainingSeconds / 3600);
-      const m = Math.floor((remainingSeconds % 3600) / 60);
-      const s = remainingSeconds % 60;
-      const displayText = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-      countdownDisplay.textContent = displayText;
-      countdownDisplay.setAttribute('aria-valuenow', remainingSeconds);
-      countdownDisplay.setAttribute('aria-valuetext', `${h} hours, ${m} minutes, ${s} seconds remaining`);
-    }
-
-    function announce(text) {
-      a11yLiveRegion.textContent = text;
-    }
-
-    async function requestWakeLock() {
-      try {
-        if ('wakeLock' in navigator) {
-          wakeLock = await navigator.wakeLock.request('screen');
-          console.log('Screen Wake Lock acquired');
-          wakeLock.addEventListener('release', () => {
-            console.log('Screen Wake Lock released');
-          });
-        } else {
-          // Fallback using polyfill
-          WakeLock.request().then(() => console.log('Screen Wake Lock (polyfill) acquired'));
-        }
-      } catch (err) {
-        console.error(`${err.name}, ${err.message}`);
-      }
-    }
-    
-    function releaseWakeLock() {
-      if (wakeLock !== null) {
-        wakeLock.release();
-        wakeLock = null;
-      } else {
-        WakeLock.release();
-      }
-    }
-
-    function scheduleNextSound(volume, pitch) {
-      if (remainingSeconds <= 0) return;
-      playSound(volume, pitch);
-      const delay = Math.random() * 10000 + 5000; // 5–15 sec
-      soundTimeout = setTimeout(() => {
-        scheduleNextSound(volume, pitch);
-      }, delay);
-    }
-
-    function startTimer() {
-      requestWakeLock();
-      
-      const h = parseInt(document.getElementById("hours").value);
-      const m = parseInt(document.getElementById("minutes").value);
-      const s = parseInt(document.getElementById("seconds").value);
-      remainingSeconds = h * 3600 + m * 60 + s;
-
-      const volume = volumeSlider.value / 100;
-      const pitch = getPitchFrequency();
-
-      // Initialize audio on first interaction
-      initAudio();
-
-      // Disable controls
-      document.getElementById("hours").disabled = true;
-      document.getElementById("minutes").disabled = true;
-      document.getElementById("seconds").disabled = true;
-      volumeSlider.disabled = true;
-      pitchSlider.disabled = true;
-      
-      // Update button state
-      startBtn.textContent = "Stop";
-      startBtn.setAttribute('aria-pressed', 'true');
-      timerRunning = true;
-
-      // Announce start
-      announce(`Timer started for ${h} hours, ${m} minutes, ${s} seconds at ${volume*100}% volume and ${getPitchName()} pitch`);
-
-      updateCountdownDisplay();
-
-      countdownInterval = setInterval(() => {
-        if (remainingSeconds <= 0) {
-          clearInterval(countdownInterval);
-          clearTimeout(soundTimeout);
-          countdownDisplay.textContent = "Done";
-          announce("Timer completed");
-          resetControls();
-          return;
-        }
-        remainingSeconds--;
-        updateCountdownDisplay();
-      }, 1000);
-
-      scheduleNextSound(volume, pitch);
-    }
-
-    function resetControls() {
-      releaseWakeLock();
-      startBtn.textContent = "Start";
-      startBtn.setAttribute('aria-pressed', 'false');
-      document.getElementById("hours").disabled = false;
-      document.getElementById("minutes").disabled = false;
-      document.getElementById("seconds").disabled = false;
-      volumeSlider.disabled = false;
-      pitchSlider.disabled = false;
-      timerRunning = false;
-    }
-
-    function stopTimer() {
-      clearInterval(countdownInterval);
-      clearTimeout(soundTimeout);
-      countdownDisplay.textContent = "";
-      announce("Timer stopped");
-      resetControls();
-    }
-
-    // Event listeners
-    volumeSlider.addEventListener("input", () => {
-      const value = volumeSlider.value;
-      volumeOutput.textContent = value;
-      volumeSlider.setAttribute('aria-valuenow', value);
-    });
-
-    pitchSlider.addEventListener("input", () => {
-      const value = parseInt(pitchSlider.value);
-      pitchSlider.setAttribute('aria-valuenow', value);
-      pitchSlider.setAttribute('aria-valuetext', getPitchName());
-    });
-
-    startBtn.addEventListener("click", () => {
-      if (!timerRunning) {
-        startTimer();
-      } else {
-        stopTimer();
-      }
-    });
-
-    // Keyboard accessibility for sliders
-    volumeSlider.addEventListener("keydown", (e) => {
-      if (['ArrowUp', 'ArrowRight'].includes(e.key)) {
-        volumeSlider.value = Math.min(100, parseInt(volumeSlider.value) + 1);
-      } else if (['ArrowDown', 'ArrowLeft'].includes(e.key)) {
-        volumeSlider.value = Math.max(0, parseInt(volumeSlider.value) - 1);
-      } else if (['PageUp'].includes(e.key)) {
-        volumeSlider.value = Math.min(100, parseInt(volumeSlider.value) + 10);
-      } else if (['PageDown'].includes(e.key)) {
-        volumeSlider.value = Math.max(0, parseInt(volumeSlider.value) - 10);
-      } else if (['Home'].includes(e.key)) {
-        volumeSlider.value = 0;
-      } else if (['End'].includes(e.key)) {
-        volumeSlider.value = 100;
-      } else {
-        return;
-      }
-      volumeSlider.dispatchEvent(new Event('input'));
-      e.preventDefault();
-    });
-
-    pitchSlider.addEventListener("keydown", (e) => {
-      if (['ArrowUp', 'ArrowRight'].includes(e.key)) {
-        pitchSlider.value = Math.min(2, parseInt(pitchSlider.value) + 1);
-      } else if (['ArrowDown', 'ArrowLeft'].includes(e.key)) {
-        pitchSlider.value = Math.max(0, parseInt(pitchSlider.value) - 1);
-      } else if (['Home'].includes(e.key)) {
-        pitchSlider.value = 0;
-      } else if (['End'].includes(e.key)) {
-        pitchSlider.value = 2;
-      } else {
-        return;
-      }
-      pitchSlider.dispatchEvent(new Event('input'));
-      e.preventDefault();
-    });
-
-    // Service Worker Registration
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/disruptor/sw.js').then(registration => {
-          console.log('ServiceWorker registration successful');
-        }).catch(err => {
-          console.log('ServiceWorker registration failed: ', err);
-        });
-      });
-    }
-
-    // Handle visibility changes to reacquire wake lock
-    document.addEventListener('visibilitychange', async () => {
-      if (timerRunning && document.visibilityState === 'visible') {
-        await requestWakeLock();
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
