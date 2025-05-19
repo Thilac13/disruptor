@@ -9,6 +9,7 @@ let timerRunning = false;
 let remainingSeconds = 0;
 let countdownInterval, soundTimeout;
 let wakeLock = null;
+let activeOscillators = []; // Track all active sound oscillators
 
 // Initialize AudioContext on user interaction
 let audioCtx;
@@ -54,6 +55,7 @@ function playSound(volume, pitch) {
   
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
+  activeOscillators.push({ osc, gain });
 
   osc.type = getSoundType();
   osc.frequency.value = pitch;
@@ -67,9 +69,30 @@ function playSound(volume, pitch) {
   const duration = Math.random() * (maxDur - minDur) + minDur;
 
   setTimeout(() => {
-    osc.stop();
-    gain.disconnect();
+    stopSound(osc, gain);
   }, duration);
+}
+
+function stopSound(osc, gain) {
+  try {
+    if (osc) {
+      osc.stop();
+      osc.disconnect();
+    }
+    if (gain) {
+      gain.disconnect();
+    }
+    activeOscillators = activeOscillators.filter(item => item.osc !== osc);
+  } catch (e) {
+    console.log("Error stopping sound:", e);
+  }
+}
+
+function stopAllSounds() {
+  activeOscillators.forEach(({ osc, gain }) => {
+    stopSound(osc, gain);
+  });
+  activeOscillators = [];
 }
 
 function updateCountdownDisplay() {
@@ -156,6 +179,7 @@ function startTimer() {
     if (remainingSeconds <= 0) {
       clearInterval(countdownInterval);
       clearTimeout(soundTimeout);
+      stopAllSounds();
       countdownDisplay.textContent = "Done";
       announce("Timer completed");
       resetControls();
@@ -186,6 +210,7 @@ function resetControls() {
 function stopTimer() {
   clearInterval(countdownInterval);
   clearTimeout(soundTimeout);
+  stopAllSounds();
   countdownDisplay.textContent = "";
   announce("Timer stopped");
   resetControls();
