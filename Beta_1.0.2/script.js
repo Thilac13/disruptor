@@ -1,13 +1,7 @@
 (() => {
-  const RADIUS = 110;
-  const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
-
   const circleProgress = document.querySelector(".circle-progress");
   const timeDisplay = document.getElementById("time-display");
   const playPauseBtn = document.getElementById("play-pause-btn");
-
-  circleProgress.style.strokeDasharray = CIRCUMFERENCE;
-  circleProgress.style.strokeDashoffset = CIRCUMFERENCE;
 
   let total = 0;
   let remaining = 0;
@@ -33,11 +27,6 @@
 
   function updateDisplay() {
     timeDisplay.textContent = formatTime(remaining);
-  }
-
-  function setCircleProgress(percent) {
-    const offset = CIRCUMFERENCE * (1 - percent);
-    circleProgress.style.strokeDashoffset = offset;
   }
 
   function playBeep() {
@@ -72,13 +61,12 @@
     intervalId = setInterval(() => {
       remaining--;
       updateDisplay();
-      setCircleProgress(1 - remaining / total);
       if (remaining <= 0) stopCountdown();
     }, 1000);
     scheduleBeep();
   }
 
-  function stopCountdown() {
+  function stopCountdown() {        
     clearInterval(intervalId);
     intervalId = null;
     if (nextBeepTimeout) clearTimeout(nextBeepTimeout);
@@ -93,7 +81,6 @@
       if (total <= 0) return;
       remaining = total;
       updateDisplay();
-      setCircleProgress(0);
       startCountdown();
       showPauseIcon();
     }
@@ -135,6 +122,5 @@
 
   // Init
   updateDisplay();
-  setCircleProgress(0);
   showPlayIcon();
 })();
