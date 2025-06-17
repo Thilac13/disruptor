@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Countdown with Sound & Progress</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+
+    <div id="tab-timer" class="tab-content active">
+      <header>
+        <h1>Countdown Timer</h1>
+        <button class="mode-toggle" aria-label="Toggle Dark/Light Mode" title="Toggle Dark/Light Mode">
+          <span class="icon-moon">🌙</span>
+        </button>
+      </header>
+
+      <div class="timer-wrapper">
+        <div class="time-display" id="time-display" aria-live="polite" aria-atomic="true">00:00:00</div>
+        <button id="play-pause-btn" class="play-pause" aria-label="Start timer" title="Start/Pause Timer"></button>
+      </div>
+    </div>
+
+    <div id="tab-settings" class="tab-content">
+      <form class="controls" aria-label="Timer settings">
+        <fieldset>
+          <legend>Countdown Time</legend>
+          <label>Hours: <input type="number" id="hours" min="0" max="23" value="0" /></label>
+          <label>Minutes: <input type="number" id="minutes" min="0" max="59" value="0" /></label>
+          <label>Seconds: <input type="number" id="seconds" min="0" max="59" value="0" /></label>
+        </fieldset>
+
+        <fieldset>
+          <legend>Sound Settings</legend>
+          <label>Interval (seconds):
+            <input type="range" id="interval" min="5" max="600" value="30" step="1" />
+            <span id="interval-value">30s</span>
+          </label>
+          <label>Duration (seconds):
+            <input type="range" id="duration" min="1" max="60" value="3" step="1" />
+            <span id="duration-value">3s</span>
+          </label>
+          <label>Volume:
+            <input type="range" id="volume" min="0" max="1" value="0.5" step="0.01" />
+            <span id="volume-value">50%</span>
+          </label>
+          <label>Pitch Min:
+            <input type="range" id="pitch-min" min="0.5" max="2" value="0.8" step="0.01" />
+            <span id="pitch-min-value">0.80</span>
+          </label>
+          <label>Pitch Max:
+            <input type="range" id="pitch-max" min="0.5" max="2" value="1.2" step="0.01" />
+            <span id="pitch-max-value">1.20</span>
+          </label>
+        </fieldset>
+      </form>
+    </div>
+
+    <!-- Bottom Tabs -->
+    <nav class="tab-bar">
+      <button class="tab-button active" data-tab="tab-timer">Timer</button>
+      <button class="tab-button" data-tab="tab-settings">Settings</button>
+    </nav>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
