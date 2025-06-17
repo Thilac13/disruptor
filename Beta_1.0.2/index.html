@@ -16,34 +16,12 @@
     </header>
 
     <div class="timer-wrapper">
-      <svg class="progress-ring" width="240" height="240" aria-hidden="true">
-        <circle
-          class="circle-bg"
-          stroke="rgba(255, 255, 255, 0.15)"
-          stroke-width="8"
-          fill="transparent"
-          r="110"
-          cx="120"
-          cy="120"
-        />
-        <circle
-          class="circle-progress"
-          stroke="var(--accent-color)"
-          stroke-width="8"
-          fill="transparent"
-          r="110"
-          cx="120"
-          cy="120"
-          stroke-linecap="round"
-        />
-      </svg>
       <div class="time-display" id="time-display" aria-live="polite" aria-atomic="true">00:00:00</div>
       <button id="play-pause-btn" class="play-pause" aria-label="Start timer" title="Start/Pause Timer"></button>
     </div>
 
     <form class="controls" aria-label="Timer settings">
       <fieldset>
-        <legend>Countdown Time</legend>
         <label>
           Hours:
           <input type="number" id="hours" min="0" max="23" value="0" />
