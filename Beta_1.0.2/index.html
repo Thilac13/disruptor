@@ -16,36 +16,12 @@
     </header>
 
     <div class="timer-wrapper">
-      <svg class="progress-ring" width="180" height="180" aria-hidden="true">
-        <circle
-          class="circle-bg"
-          stroke="rgba(255, 255, 255, 0.15)"
-          stroke-width="8"
-          fill="transparent"
-          r="74"
-          cx="90"
-          cy="90"
-        />
-        <circle
-          class="circle-progress"
-          stroke="var(--accent-color)"
-          stroke-width="8"
-          fill="transparent"
-          r="74"
-          cx="90"
-          cy="90"
-          stroke-linecap="round"
-          stroke-dasharray="464"
-          stroke-dashoffset="464"
-        />
-      </svg>
       <div class="time-display" id="time-display" aria-live="polite" aria-atomic="true">00:00:00</div>
       <button id="play-pause-btn" class="play-pause" aria-label="Start timer" title="Start/Pause Timer"></button>
     </div>
 
     <form class="controls" aria-label="Timer settings">
       <fieldset>
-        <legend>Countdown Time</legend>
         <label>
           Hours:
           <input type="number" id="hours" min="0" max="23" value="0" />
@@ -64,77 +40,27 @@
         <legend>Sound Settings</legend>
         <label>
           Interval (seconds):
-          <input
-            type="range"
-            id="interval"
-            min="5"
-            max="600"
-            value="30"
-            step="1"
-            aria-valuemin="5"
-            aria-valuemax="600"
-            aria-valuenow="30"
-          />
+          <input type="range" id="interval" min="5" max="600" value="30" step="1" />
           <span id="interval-value">30s</span>
         </label>
         <label>
           Duration (seconds):
-          <input
-            type="range"
-            id="duration"
-            min="1"
-            max="60"
-            value="3"
-            step="1"
-            aria-valuemin="1"
-            aria-valuemax="60"
-            aria-valuenow="3"
-          />
+          <input type="range" id="duration" min="1" max="60" value="3" step="1" />
           <span id="duration-value">3s</span>
         </label>
         <label>
           Volume:
-          <input
-            type="range"
-            id="volume"
-            min="0"
-            max="1"
-            value="0.5"
-            step="0.01"
-            aria-valuemin="0"
-            aria-valuemax="1"
-            aria-valuenow="0.5"
-          />
+          <input type="range" id="volume" min="0" max="1" value="0.5" step="0.01" />
           <span id="volume-value">50%</span>
         </label>
         <label>
           Pitch Min:
-          <input
-            type="range"
-            id="pitch-min"
-            min="0.5"
-            max="2"
-            value="0.8"
-            step="0.01"
-            aria-valuemin="0.5"
-            aria-valuemax="2"
-            aria-valuenow="0.8"
-          />
+          <input type="range" id="pitch-min" min="0.5" max="2" value="0.8" step="0.01" />
           <span id="pitch-min-value">0.80</span>
         </label>
         <label>
           Pitch Max:
-          <input
-            type="range"
-            id="pitch-max"
-            min="0.5"
-            max="2"
-            value="1.2"
-            step="0.01"
-            aria-valuemin="0.5"
-            aria-valuemax="2"
-            aria-valuenow="1.2"
-          />
+          <input type="range" id="pitch-max" min="0.5" max="2" value="1.2" step="0.01" />
           <span id="pitch-max-value">1.20</span>
         </label>
       </fieldset>
